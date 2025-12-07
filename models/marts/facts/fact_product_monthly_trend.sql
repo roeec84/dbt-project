@@ -28,9 +28,9 @@ WITH monthly_product_sales AS (
 previous_month_sales AS (
     SELECT
         *,
-        LAG(monthly_revenue) OVER(PARTITION BY product_id ORDER BY order_month) AS previous_month_revenue,
-        LAG(total_units_sold) OVER(PARTITION BY product_id ORDER BY order_month) AS previous_month_units_sold,
-        LAG(total_unique_buyers) OVER(PARTITION BY product_id ORDER BY order_month) AS previous_month_buyers
+        LAG(monthly_revenue, 1, 0) OVER(PARTITION BY product_id ORDER BY order_month) AS previous_month_revenue,
+        LAG(total_units_sold, 1, 0) OVER(PARTITION BY product_id ORDER BY order_month) AS previous_month_units_sold,
+        LAG(total_unique_buyers, 1, 0) OVER(PARTITION BY product_id ORDER BY order_month) AS previous_month_buyers
     FROM monthly_product_sales
 )
 
