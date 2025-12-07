@@ -1,0 +1,20 @@
+version: 2
+
+sources:
+  - name: thelook
+    database: bigquery-public-data
+    schema: thelook_ecommerce
+    tables:
+      - name: orders
+      - name: order_items
+      - name: users
+      - name: products
+      - name: events
+      - name: inventory_items
+      - name: distribution_centers
+
+  - name: api_data
+    schema: bronze_api
+    tables:
+      - name: weather_daily
+      - name: currency_rates
