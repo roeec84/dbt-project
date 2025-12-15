@@ -56,7 +56,7 @@ SELECT
     ROUND(SAFE_DIVIDE(pm.monthly_revenue - pm.previous_month_revenue, pm.previous_month_revenue) * 100, 2) AS revenue_growth_pct,
     pm.total_units_sold - COALESCE(pm.previous_month_units_sold, 0) AS units_sold_diff,
     ROUND(SAFE_DIVIDE(pm.total_units_sold - pm.previous_month_units_sold, pm.previous_month_units_sold) * 100, 2) AS units_growth_pct,
-    DENSE_RANK() OVER (PARTITION BY pm.order_month ORDER BY pm.monthly_revenue DESC) AS trend_rank,
+    DENSE_RANK() OVER (PARTITION BY pm.order_month ORDER BY pm.total_units_sold DESC) AS trend_rank,
     CURRENT_TIMESTAMP() AS updated_at
 FROM {{ref('dim_products')}} dp
 JOIN previous_month_sales pm ON dp.product_id = pm.product_id
