@@ -53,9 +53,19 @@ SELECT
     pm.previous_month_units_sold,
     pm.previous_month_buyers,
     ROUND(pm.monthly_revenue - COALESCE(pm.previous_month_revenue, 0), 2) AS revenue_diff,
-    ROUND(SAFE_DIVIDE(pm.monthly_revenue - pm.previous_month_revenue, pm.previous_month_revenue) * 100, 2) AS revenue_growth_pct,
+    ROUND(
+        CASE
+            WHEN pm.previous_month_revenue = 0 AND pm.monthly_revenue > 0 THEN 100
+            ELSE SAFE_DIVIDE(pm.monthly_revenue - pm.previous_month_revenue, pm.previous_month_revenue) * 100
+        END,
+    2) AS revenue_growth_pct,
     pm.total_units_sold - COALESCE(pm.previous_month_units_sold, 0) AS units_sold_diff,
-    ROUND(SAFE_DIVIDE(pm.total_units_sold - pm.previous_month_units_sold, pm.previous_month_units_sold) * 100, 2) AS units_growth_pct,
+    ROUND(
+        CASE
+            WHEN pm.previous_month_units_sold = 0 AND pm.total_units_sold > 0 THEN 100
+            ELSE SAFE_DIVIDE(pm.total_units_sold - pm.previous_month_units_sold, pm.previous_month_units_sold) * 100
+        END,
+    2) AS units_growth_pct,
     DENSE_RANK() OVER (PARTITION BY pm.order_month ORDER BY pm.total_units_sold DESC) AS trend_rank,
     CURRENT_TIMESTAMP() AS updated_at
 FROM {{ref('dim_products')}} dp
