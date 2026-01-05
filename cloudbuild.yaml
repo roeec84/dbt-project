@@ -1,18 +1,13 @@
 steps:
-  # Install dbt-bigquery
+  # Single step to install and run dbt
   - name: 'python:3.11'
-    entrypoint: 'pip'
-    args: ['install', 'dbt-bigquery']
-  
-  # Install dbt dependencies
-  - name: 'python:3.11'
-    entrypoint: 'dbt'
-    args: ['deps', '--profiles-dir', '.']
-  
-  # Run dbt models
-  - name: 'python:3.11'
-    entrypoint: 'dbt'
-    args: ['run', '--target', 'prod', '--profiles-dir', '.']
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        pip install dbt-bigquery
+        dbt deps --profiles-dir .
+        dbt run --target prod --profiles-dir .
 
 timeout: '1800s'
 options:
