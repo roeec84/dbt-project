@@ -1,4 +1,4 @@
-
+*.json
 target/
 dbt_packages/
 logs/
