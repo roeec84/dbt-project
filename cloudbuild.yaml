@@ -15,3 +15,5 @@ steps:
     args: ['run', '--target', 'prod', '--profiles-dir', '.']
 
 timeout: '1800s'
+options:
+  logging: CLOUD_LOGGING_ONLY
